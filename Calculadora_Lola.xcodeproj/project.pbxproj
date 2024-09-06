@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FBCED32A2C8B57C3008122BA /* InterfazBotones.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCED3292C8B57C3008122BA /* InterfazBotones.swift */; };
 		FBD430EF2C860DB900B7F589 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD430EE2C860DB900B7F589 /* AppDelegate.swift */; };
 		FBD430F12C860DB900B7F589 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD430F02C860DB900B7F589 /* SceneDelegate.swift */; };
 		FBD430F32C860DB900B7F589 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD430F22C860DB900B7F589 /* ViewController.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FBCED3292C8B57C3008122BA /* InterfazBotones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfazBotones.swift; sourceTree = "<group>"; };
 		FBD430EB2C860DB900B7F589 /* Calculadora_Lola.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculadora_Lola.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBD430EE2C860DB900B7F589 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FBD430F02C860DB900B7F589 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +78,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FBCED3272C8B577F008122BA /* Modelo */ = {
+			isa = PBXGroup;
+			children = (
+				FBCED3282C8B5796008122BA /* Interfaz */,
+			);
+			path = Modelo;
+			sourceTree = "<group>";
+		};
+		FBCED3282C8B5796008122BA /* Interfaz */ = {
+			isa = PBXGroup;
+			children = (
+				FBCED3292C8B57C3008122BA /* InterfazBotones.swift */,
+			);
+			path = Interfaz;
+			sourceTree = "<group>";
+		};
 		FBD430E22C860DB900B7F589 = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +117,7 @@
 		FBD430ED2C860DB900B7F589 /* Calculadora_Lola */ = {
 			isa = PBXGroup;
 			children = (
+				FBCED3272C8B577F008122BA /* Modelo */,
 				FBD430EE2C860DB900B7F589 /* AppDelegate.swift */,
 				FBD430F02C860DB900B7F589 /* SceneDelegate.swift */,
 				FBD430F22C860DB900B7F589 /* ViewController.swift */,
@@ -259,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBD430F32C860DB900B7F589 /* ViewController.swift in Sources */,
+				FBCED32A2C8B57C3008122BA /* InterfazBotones.swift in Sources */,
 				FBD430EF2C860DB900B7F589 /* AppDelegate.swift in Sources */,
 				FBD430F12C860DB900B7F589 /* SceneDelegate.swift in Sources */,
 			);
