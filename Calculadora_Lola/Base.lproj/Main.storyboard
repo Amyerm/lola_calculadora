@@ -132,8 +132,9 @@
                                                 <rect key="frame" x="0.0" y="261" width="64.333333333333329" height="62"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="filled" title="="/>
+                                                <buttonConfiguration key="configuration" style="filled" title="Op"/>
                                                 <connections>
+                                                    <action selector="boton_escoger_operacion_pulsado:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tly-Ro-ZJB"/>
                                                     <action selector="que_hacer_al_pushar_boton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PJ1-ft-nAa"/>
                                                 </connections>
                                             </button>
@@ -168,8 +169,8 @@
                     </view>
                     <connections>
                         <outlet property="boton_operacion" destination="d8y-Ih-kDX" id="eeb-NI-DzP"/>
-                        <outlet property="boton_para_interactuar" destination="2SI-HX-t2Z" id="Kxr-5W-ZsN"/>
                         <outlet property="texto_a_cambiar" destination="iNP-oy-rWs" id="f5u-7J-sLr"/>
+                        <outlet property="vista_stack" destination="9NN-Gi-1uI" id="yaE-IM-sEa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
