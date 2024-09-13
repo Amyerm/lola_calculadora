@@ -7,111 +7,203 @@
 
 import UIKit
 
-enum estados_de_la_calculadora {
-    case seleccionar_numeros
-    case escoger_operacion
-    case mostrar_resultado
-}
-
 class ViewController: UIViewController {
-    var estado_actual: estados_de_la_calculadora = estados_de_la_calculadora.seleccionar_numeros
     
-    @IBOutlet weak var texto_a_cambiar: UILabel!
-    @IBOutlet weak var operacion_texto: UILabel!
-    @IBOutlet weak var segundo_termino_texto: UILabel!
+    @IBOutlet weak var calculatorWorkings: UILabel!
+    @IBOutlet weak var calculatorResults: UILabel!
     
-    @IBOutlet weak var boton_operacion: UIButton!
-    @IBOutlet weak var vista_stack: UIStackView!
+    var workings:String = ""
     
-    var botones_interfaz: Dictionary<String, IUBotonCalculadora> = [:]
-    var operacion_actual: String? = nil
-    
-    
-    override func viewDidLoad() {
-            super.viewDidLoad()
-            
-        inicializar_calculadora()
-            
-        }
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+                clearAll()
         
-        @IBAction func que_hacer_al_pushar_boton(_ sender: UIButton) {
-            if(estado_actual == estados_de_la_calculadora.seleccionar_numeros){
-                        //[X] TODO: Arreglar glitch del text quitando el optional
-                        if let _mensajero_id = sender.restorationIdentifier{
-                            let texto_cache = botones_interfaz[_mensajero_id]?.numero
-                            texto_a_cambiar.text = "\(texto_a_cambiar.text ?? "")\(texto_cache!)"
-                            
-                        }
-                    }
-                    else if (estado_actual == estados_de_la_calculadora.escoger_operacion){
-                        if let _mensajero_id = sender.restorationIdentifier{
-                            operacion_actual = botones_interfaz[_mensajero_id]?.operacion
-                            estado_actual = estados_de_la_calculadora.seleccionar_numeros
-                        }
-                        else {
-                            operacion_actual = nil
-                        }
-                    }
-                    
-                    dibujar_numeros_u_operaciones_en_interfaz()
-                }
-        
-    @IBAction func boton_escoger_operacion_pulsado(_ sender: UIButton){
-        boton_operacion.setTitle("Ñ", for: .normal )
-        
-        if (estado_actual == estados_de_la_calculadora.seleccionar_numeros){
-            estado_actual = estados_de_la_calculadora.escoger_operacion
-            dibujar_numeros_u_operaciones_en_interfaz()
-        }
     }
-        
-        
-        func inicializar_calculadora() -> Void{
-            crear_arreglo_botones()
-            identificar_botones()
+    
+    func clearAll()
+        {
+            workings = ""
+            calculatorWorkings.text = ""
+            calculatorResults.text = ""
         }
-        
-        func crear_arreglo_botones() -> Void {
-            botones_interfaz = IUBotonCalculadora.crear_arreglo_botones()
-        }
-        
-        func dibujar_numeros_u_operaciones_en_interfaz(){
-            if(estado_actual == estados_de_la_calculadora.escoger_operacion){
-                        for elemento in botones_interfaz.values{
-                            elemento.referencia_a_boton_interfaz?.setTitle(
-                                elemento.operacion,
-                                for: .normal
-                            )
-                        }
-                        
-                    }
-                    
-                    else if (estado_actual == estados_de_la_calculadora.seleccionar_numeros){
-                        for elemento in botones_interfaz.values{
-                            elemento.referencia_a_boton_interfaz?.setTitle(
-                                String(elemento.numero),
-                                for: .normal
-                            )
-                        }
+    
+    @IBAction func equalsTap(_ sender: Any) {
+        if(validInput())
+                {
+                    let checkedWorkingsForPercent = workings.replacingOccurrences(of: "%", with: "*0.01")
+                    let expression = NSExpression(format: checkedWorkingsForPercent)
+                    let result = expression.expressionValue(with: nil, context: nil) as! Double
+                    let resultString = formatResult(result: result)
+                    calculatorResults.text = resultString
+                }
+                else
+                {
+                    let alert = UIAlertController(
+                        title: "Invalid Input",
+                        message: "Calculator unable to do math based on input",
+                        preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Okay", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }
+    }
+    
+    func validInput() ->Bool
+        {
+            var count = 0
+            var funcCharIndexes = [Int]()
+            
+            for char in workings
+            {
+                if(specialCharacter(char: char))
+                {
+                    funcCharIndexes.append(count)
+                }
+                count += 1
+            }
+            
+            var previous: Int = -1
+            
+            for index in funcCharIndexes
+            {
+                if(index == 0)
+                {
+                    return false
+                }
+                
+                if(index == workings.count - 1)
+                {
+                    return false
+                }
+                
+                if (previous != -1)
+                {
+                    if(index - previous == 1)
+                    {
+                        return false
                     }
                 }
-    
-    func identificar_botones(){
+                previous = index
+            }
+            
+            return true
+        }
         
-        for pila_de_componentes in vista_stack.subviews{
-            for boton in pila_de_componentes.subviews{
-                            //print(type(of: boton))
-                            if let identificador = boton.restorationIdentifier{
-                                botones_interfaz[identificador]?.referencia_a_boton_interfaz = boton as? UIButton
-                            }
-                        }
-                    }
-                    
-                    for elemento in botones_interfaz.values{
-                        elemento.referencia_a_boton_interfaz?.setTitle("ñ", for: .normal)
-                    }
+        func specialCharacter (char: Character) -> Bool
+        {
+            if(char == "*")
+            {
+                return true
+            }
+            if(char == "/")
+            {
+                return true
+            }
+            if(char == "+")
+            {
+                return true
+            }
+            return false
+        }
+        
+        func formatResult(result: Double) -> String
+        {
+            if(result.truncatingRemainder(dividingBy: 1) == 0)
+            {
+                return String(format: "%.0f", result)
+            }
+            else
+            {
+                return String(format: "%.2f", result)
+            }
+        }
     
+    @IBAction func allClearTap(_ sender: Any) {
+        clearAll()
     }
+    
+    @IBAction func backTap(_ sender: Any) {
+        if(!workings.isEmpty)
+        {
+            workings.removeLast()
+            calculatorWorkings.text = workings
+        }
+    }
+    
+    func addToWorkings(value: String)
+        {
+            workings = workings + value
+            calculatorWorkings.text = workings
+        }
+    
+    @IBAction func percentTap(_ sender: Any) {
+        addToWorkings(value: "%")
+    }
+    
+    @IBAction func divideTap(_ sender: Any) {
+        addToWorkings(value: "/")
+    }
+    
+    @IBAction func timesTap(_ sender: Any) {
+        addToWorkings(value: "*")
+    }
+    
+    @IBAction func minusTap(_ sender: Any) {
+        addToWorkings(value: "-")
+    }
+    
+    @IBAction func plusTap(_ sender: Any) {
+        addToWorkings(value: "+")
+    }
+    
+    @IBAction func decimalTap(_ sender: Any) {
+        addToWorkings(value: ".")
+    }
+    
+    @IBAction func zeroTap(_ sender: Any) {
+        addToWorkings(value: "0")
+    }
+    
+    @IBAction func oneTap(_ sender: Any) {
+        addToWorkings(value: "1")
+    }
+    
+    @IBAction func twoTap(_ sender: Any) {
+        addToWorkings(value: "2")
+    }
+    
+    @IBAction func threeTap(_ sender: Any){
+        addToWorkings(value: "3")
+    }
+        
+    @IBAction func fourTap(_ sender: Any){
+        addToWorkings(value: "4")
+    }
+        
+    @IBAction func fiveTap(_ sender: Any){
+        addToWorkings(value: "5")
+    }
+        
+    @IBAction func sixTap(_ sender: Any){
+        addToWorkings(value: "6")
+    }
+        
+    @IBAction func sevenTap(_ sender: Any){
+        addToWorkings(value: "7")
+    }
+        
+    @IBAction func eightTap(_ sender: Any)
+    {
+        addToWorkings(value: "8")
+    }
+        
+    @IBAction func nineTap(_ sender: Any){
+        addToWorkings(value: "9")
+    }
+    
+    
+    
+    
 }
     
 
